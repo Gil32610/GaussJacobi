@@ -59,7 +59,7 @@ public class GaussJacobiIterative {
     private void findSolution(double[] result) {
         double[] variables = new double[result.length];
 
-        for (int j = 0; !isSolution(result, variables)|| converge<20; j++) {
+        for (int j = 0; !isSolution(result, variables)&&converge<100; j++) {
             int currentPos = j % variables.length;
             converge = j;
             double operation = .0;
@@ -104,8 +104,8 @@ public class GaussJacobiIterative {
     }
 
     public String toString() {
-        return "Matrix: \n" + matrixToString(matrix) + "\nSystem result: \n" + variables(result) + "\nSolution: \n"
-                + variables(variables) + "\nThe result converged at " + converge + " iteration.";
+        return "Matrix: \n" + matrixToString(matrix) + "\nSystem result: \n" + variables(result) + "\nApproximate Solution: \n"
+                + variables(variables) + (converge<100?("\nThe result converged at " + converge + " iteration."):("\nThe system was not converging at " + converge + "th iteration.") );
     }
 
 }
