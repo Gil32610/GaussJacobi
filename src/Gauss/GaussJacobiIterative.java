@@ -59,7 +59,7 @@ public class GaussJacobiIterative {
     private void findSolution(double[] result) {
         double[] variables = new double[result.length];
 
-        for (int j = 0; !isSolution(result, variables)&&converge<100; j++) {
+        for (int j = 0; !isSolution(result, variables)&&converge<1000; j++) {
             int currentPos = j % variables.length;
             converge = j;
             double operation = .0;
