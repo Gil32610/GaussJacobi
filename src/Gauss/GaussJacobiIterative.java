@@ -12,7 +12,7 @@ public class GaussJacobiIterative {
         this.result = result;
         this.matrix = matrix;
         this.variables = new double[result.length];
-        findSolution(result);
+        findSolution();
     }
 
     private boolean isSolution(double[] vector, double[] variables) {
@@ -28,33 +28,33 @@ public class GaussJacobiIterative {
         return (rule <= 0.001);
     }
 
-    private boolean converge(double[][] matrix) {
+    // private boolean converge(double[][] matrix) {
 
-        for (int i = 0; i < matrix.length; i++) {
-            double value = 0.;
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (matrix[i][j] != matrix[i][i])
-                    value += matrix[i][j];
-                if (value > matrix[i][i]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+    //     for (int i = 0; i < matrix.length; i++) {
+    //         double value = 0.;
+    //         for (int j = 0; j < matrix[0].length; j++) {
+    //             if (matrix[i][j] != matrix[i][i])
+    //                 value += matrix[i][j];
+    //             if (value > matrix[i][i]) {
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    //     return true;
+    // }
 
-    private double[] multiplication(double[] result) {
-        double[] multiplication = new double[result.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                multiplication[i] += matrix[i][j] * result[j];
-            }
-        }
-        return multiplication;
+    // private double[] multiplication(double[] result) {
+    //     double[] multiplication = new double[result.length];
+    //     for (int i = 0; i < matrix.length; i++) {
+    //         for (int j = 0; j < matrix[0].length; j++) {
+    //             multiplication[i] += matrix[i][j] * result[j];
+    //         }
+    //     }
+    //     return multiplication;
 
-    }
+    // }
 
-    private void findSolution(double[] result) {
+    private void findSolution() {
         double[] vector = new double[variables.length];
         for (int j = 0; converge < 1000; j++) {
             int currentPos = j % variables.length;
