@@ -8,17 +8,24 @@ public class GaussJacobiIterative {
     private double[][] matrix;
     private double[] variables;
 
-    private boolean isSolution(double[] result, double[] solution) {
-        boolean equal = false;
-        double[] vector = multiplication(solution);
-        for (int i = 0; i < solution.length; i++) {
-            double absolute = Math.abs((result[i] - vector[i]));
-            if (absolute <= 0.1) {
-                continue;
-            }
-            return equal;
+    public GaussJacobiIterative(double[] result, double[][] matrix) {
+        this.result = result;
+        this.matrix = matrix;
+        this.variables = new double[result.length];
+        findSolution(result);
+    }
+
+    private boolean isSolution(double[] vector, double[] variables) {
+        double[] diff = new double[variables.length];
+        double[] absMax = new double[variables.length];
+        for (int i = 0; i < variables.length; i++) {
+            diff[i] = Math.abs(variables[i] - vector[i]);
         }
-        return !equal;
+        for (int j = 0; j < vector.length; j++) {
+            absMax[j] = Math.abs(variables[j]);
+        }
+        double rule = max(diff) / max(absMax);
+        return (rule <= 0.001);
     }
 
     private boolean converge(double[][] matrix) {
@@ -47,34 +54,29 @@ public class GaussJacobiIterative {
 
     }
 
-    public void setResult(double[] result) {
-        this.result = result;
-        findSolution(result);
-    }
-
-    public void setMatrix(double[][] matrix) {
-        this.matrix = matrix;
-    }
-
     private void findSolution(double[] result) {
-        double[] variables = new double[result.length];
-
-        for (int j = 0; !isSolution(result, variables)&&converge<1000; j++) {
+        double[] vector = new double[variables.length];
+        for (int j = 0; converge < 1000; j++) {
             int currentPos = j % variables.length;
             converge = j;
             double operation = .0;
             double coeficient = .0;
             for (int i = 0; i < variables.length; i++) {
                 if (i != currentPos) {
-                    operation+= (-variables[i] * matrix[currentPos][i]) / matrix[currentPos][currentPos];
+                    operation += (-variables[i] * matrix[currentPos][i]) / matrix[currentPos][currentPos];
                 }
                 if (i == variables.length - 1) {
-                    coeficient+= result[currentPos] / matrix[currentPos][currentPos];
-                    variables[currentPos] = operation+coeficient;
+                    coeficient += result[currentPos] / matrix[currentPos][currentPos];
+                    variables[currentPos] = operation + coeficient;
                 }
             }
+
+            if (isSolution(vector, variables)) {
+                break;
+            }
+            copyVariables(vector);
         }
-        this.variables = variables;
+
     }
 
     private String variables(double[] variables) {
@@ -104,8 +106,42 @@ public class GaussJacobiIterative {
     }
 
     public String toString() {
-        return "Matrix: \n" + matrixToString(matrix) + "\nSystem result: \n" + variables(result) + "\nApproximate Solution: \n"
-                + variables(variables) + (converge<100?("\nThe result converged at " + converge + " iteration."):("\nThe system was not converging at " + converge + "th iteration.") );
+        return "Matrix: \n" + matrixToString(matrix) + "\nSystem result: \n" + variables(result)
+                + "\nApproximate Solution: \n"
+                + variables(variables) + (converge < 100 ? ("\nThe result converged at " + converge + " iteration.")
+                        : ("\nThe system was not converging at " + converge + "th iteration."));
+    }
+
+    private double max(double[] vector) {
+        if (vector.length == 0)
+            return 0;
+        double max = Double.MIN_VALUE;
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i] > max)
+                max = vector[i];
+        }
+        return max;
+    }
+
+    public void copyVariables(double[] vector) {
+        for (int i = 0; i < vector.length; i++) {
+            vector[i] = variables[i];
+        }
+    }
+
+    public String equation() {
+        String equation = "";
+        for (int i = 0; i < variables.length; i++) {
+            if (i == 0) {
+                equation += variables[i] + " + ";
+            } else if (i == variables.length - 1) {
+                equation += variables[i] + "X^" + i;
+            } else {
+                equation += variables[i] + "X^" + i + " + ";
+            }
+
+        }
+        return equation;
     }
 
 }
