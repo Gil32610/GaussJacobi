@@ -30,27 +30,27 @@ public class GaussJacobiIterative {
 
     // private boolean converge(double[][] matrix) {
 
-    //     for (int i = 0; i < matrix.length; i++) {
-    //         double value = 0.;
-    //         for (int j = 0; j < matrix[0].length; j++) {
-    //             if (matrix[i][j] != matrix[i][i])
-    //                 value += matrix[i][j];
-    //             if (value > matrix[i][i]) {
-    //                 return false;
-    //             }
-    //         }
-    //     }
-    //     return true;
+    // for (int i = 0; i < matrix.length; i++) {
+    // double value = 0.;
+    // for (int j = 0; j < matrix[0].length; j++) {
+    // if (matrix[i][j] != matrix[i][i])
+    // value += matrix[i][j];
+    // if (value > matrix[i][i]) {
+    // return false;
+    // }
+    // }
+    // }
+    // return true;
     // }
 
     // private double[] multiplication(double[] result) {
-    //     double[] multiplication = new double[result.length];
-    //     for (int i = 0; i < matrix.length; i++) {
-    //         for (int j = 0; j < matrix[0].length; j++) {
-    //             multiplication[i] += matrix[i][j] * result[j];
-    //         }
-    //     }
-    //     return multiplication;
+    // double[] multiplication = new double[result.length];
+    // for (int i = 0; i < matrix.length; i++) {
+    // for (int j = 0; j < matrix[0].length; j++) {
+    // multiplication[i] += matrix[i][j] * result[j];
+    // }
+    // }
+    // return multiplication;
 
     // }
 
@@ -142,6 +142,19 @@ public class GaussJacobiIterative {
 
         }
         return equation;
+    }
+
+    public void printEquation() {
+        System.out.println("A interpolação do " + (variables.length - 1) + "º grau aproximada obtida é:");
+        for (int i = 0; i < variables.length; i++) {
+            if (i == 0) {
+                System.out.printf("%.3f + ", variables[i]);
+            } else if (i == variables.length - 1) {
+                System.out.printf("%.3fX^%d\n", variables[i], i);
+            } else {
+                System.out.printf("%.3fX^%d + ", variables[i], i);
+            }
+        }
     }
 
 }
